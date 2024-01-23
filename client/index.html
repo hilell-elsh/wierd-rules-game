@@ -1,4 +1,21 @@
 <!DOCTYPE html>
+<!-- /**
+ * room inteface:
+ *  "code": {
+ *      players: [
+ *          {
+ *              socketId: "socket.id",
+ *              nickname: str,
+ *              score: int,
+ *              head: bool,
+ *              position: positions.Answer,
+ *          }
+ *      ],
+ *      currentQuestion: Int,
+ *      unusedQuests: [Int], 
+ *      turns: [socketID]
+ *  }
+ */ -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +24,11 @@
     <script src="client.js" type="module"></script>
 </head>
 <body>
-    
+    <label for="nickname">Enter your nickname: </label>
+    <input type="text" name="nickname" id="nickname">
+    <p id="asker"></p>
+    <h3 id="question"></h3>
+    <h4 id="answer"></h4>
+    <div id="score"></div>
 </body>
 </html>

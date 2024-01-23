@@ -1,3 +1,21 @@
+/**
+ * room inteface:
+ *  "code": {
+ *      players: [
+ *          {
+ *              socketId: "socket.id",
+ *              nickname: str,
+ *              score: int,
+ *              head: bool,
+ *              position: positions.Answer,
+ *          }
+ *      ],
+ *      currentQuestion: Int,
+ *      unusedQuests: [Int], 
+ *      turns: [socketID]
+ *  }
+ */
+
 const open_rooms = {
     "0000": {
         players: [
@@ -17,7 +35,7 @@ const open_rooms = {
             }
         ],
         currentQuestion: 4,
-        usedQuests: [0, 7, 9],
+        unusedQuests: [0, 7, 9], 
         turns: []
     }
 }
@@ -33,6 +51,8 @@ const openNewRoom = (socket) => {
     // generate number .toString().padStart(4, "0")
     // enterToRoom(socket, room)
     // send back the code to the user
+    // create array with questions nums
+    // set timeout interval
 }
 
 const startGame = (room) => {
@@ -40,12 +60,12 @@ const startGame = (room) => {
     // nextTurn(room)
 }
 
-const enterToRoom = (socket, room) => {
+const joinToRoom = (socket, room) => {
     // insert socket to room
     // ask user nickname
 }
 
 const nextTurn = (room) => {
-    // random question
+    // random question from array
     // random correct
 }
