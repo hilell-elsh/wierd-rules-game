@@ -1,42 +1,22 @@
-/**
- * room inteface:
- *  "code": {
- *      players: [
- *          {
- *              socketId: "socket.id",
- *              nickname: str,
- *              score: int,
- *              head: bool,
- *              position: positions.Answer,
- *          }
- *      ],
- *      currentQuestion: Int,
- *      unusedQuests: [Int], 
- *      turns: [socketID]
- *  }
- */
+const questions = require('./questions.json')
+class Room {
+    constructor(code) {
+        this.code = code;
+        this.players = [];
+        this.currentQuestion = -1;
+        this.unusedQuests = [...questions.keys()];
+        this.turns = [];
+        console.log('New room opened ', this.code);
+    }
+}
 
-const open_rooms = {
-    "0000": {
-        players: [
-            {
-                socketId: "",
-                nickname: "someone",
-                score: 0,
-                head: true,
-                position: positions.Answer,
-            },
-            {
-                socketId: "",
-                nickname: "someone2",
-                score: 0,
-                head: false,
-                position: positions.Ask
-            }
-        ],
-        currentQuestion: 4,
-        unusedQuests: [0, 7, 9], 
-        turns: []
+class Player {
+    constructor(socket) {
+        this.socket = socket;
+        this.nickname = "";
+        this.score = 0;
+        this.head = false;
+        this.position = positions.Wait;
     }
 }
 
@@ -68,4 +48,9 @@ const joinToRoom = (socket, room) => {
 const nextTurn = (room) => {
     // random question from array
     // random correct
+}
+
+module.exports = {
+    Room,
+    Player
 }

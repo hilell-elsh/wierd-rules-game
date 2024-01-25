@@ -1,4 +1,6 @@
+const { Room } = require('./rooms');
 const questions = require('./questions.json')
+
 const io = require('socket.io')(3000, {
     cors: {
         origin: ['http://localhost:8080']
@@ -23,12 +25,13 @@ const openNewRoom = (socket) => {
     const code = codeG.next().value;
     joinToRoom(socket, code)
     socket.emit('newRoom', code);
-    open_rooms[code] = {
-        players: [],
-        currentQuestion: -1,
-        unusedQuestions: [...questions.keys()],
-        turns: []
-    }
+    open_rooms[code] = new Room(code);
+    // open_rooms[code] = {
+    //     players: [],
+    //     currentQuestion: -1,
+    //     unusedQuestions: [...questions.keys()],
+    //     turns: []
+    // }
     console.log(open_rooms);
     
     // set timeout interval
