@@ -24,16 +24,31 @@
     <script src="client.js" type="module"></script>
 </head>
 <body>
-    <label for="nickname">Enter your nickname: </label>
-    <div>
-        <p id="room"></p>
+    <div id="openRoom">
+        <div id="joinRoom">
+            <input type="text" name="joinRoomCode" id="joinRoomCode">
+            <button id="joinRoomBtn" type="button">join to Room</button>
+        </div>
+        <p>Or</p>
+        <div id="newRoom">
+            <button id="newRoomBtn" type="button">Open New Room</button>
+        </div>
     </div>
-    <input type="text" name="nickname" id="nickname">
-    <button id="nicknameBtn" type="button">Enter Game</button>
-    <p id="asker"></p>
-    <h3 id="question"></h3>
-    <h4 id="answer"></h4>
-    <div id="score"></div>
-    <button id="start" type="button">Start Game</button>
+    <p id="room"></p>
+    <div id="chooseNick" hidden>
+        <label for="nickname">Enter your nickname: </label>
+        <input type="text" name="nickname" id="nickname">
+        <button id="nicknameBtn" type="button">Enter Game</button>
+    </div>
+    <p id="nicknameDisplay"></p>
+    <button id="start" type="button" hidden>
+        Start Game
+    </button>
+    <div id="gameDisplay" hidden>
+        <p>It is <span id="asker">no one</span> turn</p>
+        <h3 id="question"></h3>
+        <h4 id="answer"></h4>
+        <div id="score"></div>
+    </div>
 </body>
 </html>

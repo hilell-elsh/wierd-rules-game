@@ -18,18 +18,25 @@
 
 import { io } from "socket.io-client"
 
+const openRoom = document.getElementById("openRoom");
+const joinRoomCode = document.getElementById("joinRoomCode");
+const joinRoomBtn = document.getElementById("joinRoomBtn");
+const newRoomBtn = document.getElementById("newRoomBtn");
+const room = document.getElementById("room");
+const chooseNick = document.getElementById("chooseNick");
+const nickname = document.getElementById("nickname");
+const nicknameBtn = document.getElementById("nicknameBtn");
+const nicknameDisplay = document.getElementById("nicknameDisplay");
+const startBtn = document.getElementById("start");
+const gameDisplay = document.getElementById("gameDisplay")
 const asker = document.getElementById("asker");
 const question = document.getElementById("question");
 const answer = document.getElementById("answer");
 const score = document.getElementById("score");
-const room = document.getElementById("room");
-const startBtn = document.getElementById("start");
-const nicknameBtn = document.getElementById("nicknameBtn");
-const nickname = document.getElementById("nickname");
 
 const socket = io('http://localhost:3000')
 socket.on('connect', () => {
-    console.log(socket);
+    console.log(socket.id);
 })
 
 socket.on('ping', () => {
