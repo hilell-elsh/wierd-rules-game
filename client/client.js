@@ -22,7 +22,7 @@ const openRoom = document.getElementById("openRoom");
 const joinRoomCode = document.getElementById("joinRoomCode");
 const joinRoomBtn = document.getElementById("joinRoomBtn");
 const newRoomBtn = document.getElementById("newRoomBtn");
-const room = document.getElementById("room");
+const roomDisplay = document.getElementById("roomDisplay");
 const chooseNick = document.getElementById("chooseNick");
 const nickname = document.getElementById("nickname");
 const nicknameBtn = document.getElementById("nicknameBtn");
@@ -33,6 +33,8 @@ const asker = document.getElementById("asker");
 const question = document.getElementById("question");
 const answer = document.getElementById("answer");
 const score = document.getElementById("score");
+
+let roomCode = "0000"
 
 const socket = io('http://localhost:3000')
 socket.on('connect', () => {
@@ -45,8 +47,16 @@ socket.on('ping', () => {
 socket.on('ping-back', () => {
     pass
 })
-socket.on('newRoom', (code) => {
-    room.innerText = code;
+socket.on('new-room-opened', (code) => {
+    roomCode = code;
+    room.innerText = roomCode;
+})
+socket.on('join-failed', () => {
+    // display 'room not exist' msg
+})
+socket.on('nickname', () => {
+    // hide openRoom div
+    // display chooseNock div
 })
 
 const start = () => {
@@ -60,7 +70,7 @@ const enter = () => {
 }
 
 const newRoom = () => {
-    socket.emit('new-room')
+    socket.emit('open-new-room')
 }
 
 startBtn.onclick = start;

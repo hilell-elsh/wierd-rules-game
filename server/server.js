@@ -14,6 +14,7 @@ function* roomCodes() {
     let code = 0
     while (true) {
         code++;
+        if (code >= 10000) code = 1;
         // console.log(code)
         yield code.toString().padStart(4, "0");
     }
@@ -24,17 +25,11 @@ const codeG = roomCodes();
 const openNewRoom = (socket) => {
     const code = codeG.next().value;
     joinToRoom(socket, code)
-    socket.emit('newRoom', code);
+    socket.emit('new-room-opened', code);
     open_rooms[code] = new Room(code);
-    // open_rooms[code] = {
-    //     players: [],
-    //     currentQuestion: -1,
-    //     unusedQuestions: [...questions.keys()],
-    //     turns: []
-    // }
     console.log(open_rooms);
     
-    // set timeout interval
+    // TODO set timeout interval?
 }
 
 const startGame = (room) => {
@@ -42,9 +37,15 @@ const startGame = (room) => {
     // nextTurn(room)
 }
 
-const joinToRoom = (socket, room) => {
-    // insert socket to room
-    // ask user nickname
+const joinToRoom = (socket, roomCode) => {
+    if (roomCode in Object.keys(open_rooms)) {
+        socket.join(roomCode);
+        socket.emit('nickname')
+        // insert socket to room
+        // ask user nickname
+    } else {
+        socket.emit('join-failed')
+    }
 }
 
 const nextTurn = (room) => {
@@ -69,8 +70,8 @@ io.on('connection', socket => {
         // openNewRoom(socket);
     })
 
-    socket.on('new-room', () => {
-        console.log('new-room');
+    socket.on('open-new-room', () => {
+        console.log('new-room-request');
         openNewRoom(socket);
     })
 })
