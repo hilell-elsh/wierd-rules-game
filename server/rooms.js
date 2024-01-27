@@ -2,29 +2,12 @@ const questions = require('./questions.json')
 class Room {
     constructor(code) {
         this.code = code;
-        this.players = [];
+        this.players = {};
         this.currentQuestion = -1;
         this.unusedQuests = [...questions.keys()];
         this.turns = [];
         console.log('New room opened ', this.code);
     }
-}
-
-class Player {
-    constructor(socket) {
-        this.socket = socket;
-        this.nickname = "";
-        this.score = 0;
-        this.head = false;
-        this.position = positions.Wait;
-    }
-}
-
-const positions = {
-    Wait: 0,
-    Ask: 1,
-    AnswerCorrect: 2,
-    AnswerWrong: 3,
 }
 
 const openNewRoom = (socket) => {
@@ -51,6 +34,5 @@ const nextTurn = (room) => {
 }
 
 module.exports = {
-    Room,
-    Player
+    Room
 }

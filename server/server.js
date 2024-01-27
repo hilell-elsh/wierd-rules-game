@@ -1,4 +1,5 @@
 const { Room } = require('./rooms');
+const { Player } = require('./players');
 const questions = require('./questions.json')
 
 const io = require('socket.io')(3000, {
@@ -19,14 +20,13 @@ function* roomCodes() {
         yield code.toString().padStart(4, "0");
     }
 }
-
 const codeG = roomCodes();
 
 const openNewRoom = (socket) => {
     const code = codeG.next().value;
-    joinToRoom(socket, code)
-    socket.emit('new-room-opened', code);
     open_rooms[code] = new Room(code);
+    socket.emit('new-room-opened', code);
+    joinToRoom(socket, code, true)
     console.log(open_rooms);
     
     // TODO set timeout interval?
@@ -37,14 +37,18 @@ const startGame = (room) => {
     // nextTurn(room)
 }
 
-const joinToRoom = (socket, roomCode) => {
-    if (roomCode in Object.keys(open_rooms)) {
-        socket.join(roomCode);
-        socket.emit('nickname')
+const joinToRoom = (socket, roomCode, head = false) => {
+    if (roomCode in open_rooms) {
         // insert socket to room
+        socket.join(roomCode);
+        // insert player to room object
+        open_rooms[roomCode].players[socket.id] = new Player(socket, head)
+        socket.emit('nickname')
         // ask user nickname
+        console.log('user join to room ' + roomCode);
     } else {
         socket.emit('join-failed')
+        console.log('join to room ' + roomCode + ' failed');
     }
 }
 
@@ -73,6 +77,10 @@ io.on('connection', socket => {
     socket.on('open-new-room', () => {
         console.log('new-room-request');
         openNewRoom(socket);
+    })
+
+    socket.on('join-room', (code) => {
+        joinToRoom(socket, code);
     })
 })
 

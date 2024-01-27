@@ -49,14 +49,17 @@ socket.on('ping-back', () => {
 })
 socket.on('new-room-opened', (code) => {
     roomCode = code;
-    room.innerText = roomCode;
 })
 socket.on('join-failed', () => {
     // display 'room not exist' msg
+    alert("Room code doesn`t exist")
 })
 socket.on('nickname', () => {
+    roomDisplay.innerText = roomCode;
     // hide openRoom div
-    // display chooseNock div
+    openRoom.setAttribute("hidden", "")
+    // display chooseNick div
+    chooseNick.removeAttribute("hidden")
 })
 
 const start = () => {
@@ -73,5 +76,12 @@ const newRoom = () => {
     socket.emit('open-new-room')
 }
 
+const joinRoom = () => {
+    roomCode = joinRoomCode.value;
+    socket.emit('join-room', joinRoomCode.value)
+}
+
 startBtn.onclick = start;
 nicknameBtn.onclick = enter;
+newRoomBtn.onclick = newRoom;
+joinRoomBtn.onclick = joinRoom;
