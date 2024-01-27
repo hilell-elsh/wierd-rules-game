@@ -42,9 +42,9 @@ const joinToRoom = (socket, roomCode, head = false) => {
         // insert socket to room
         socket.join(roomCode);
         // insert player to room object
-        open_rooms[roomCode].players[socket.id] = new Player(socket, head)
-        socket.emit('nickname')
+        open_rooms[roomCode].joinToRoom(socket, head);
         // ask user nickname
+        socket.emit('nickname')
         console.log('user join to room ' + roomCode);
     } else {
         socket.emit('join-failed')
