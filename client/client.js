@@ -78,21 +78,22 @@ socket.on('score', (players) => {
         score.appendChild(p);
     }
 })
-socket.on('nick-changed', () => {
+socket.on('nick-changed', (head) => {
+    if (head) {unhide(startBtn)}
     changeNickDisplay();
     hide(chooseNick);
     unhide(gameDisplay);
 })
 
 const start = () => {
-    socket.emit('start-game')
-    alert('Starting')
+    socket.emit('start-game', roomCode);
+    hide(startBtn);
 }
 
 const sendNick = () => {
     nickname = nicknameInput.value;
     socket.emit('choose-nickname', roomCode, nickname)
-    alert('Starting ' + nicknameInput.value)
+    // alert('Starting ' + nicknameInput.value)
 }
 
 const enter = () => {

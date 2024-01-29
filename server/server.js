@@ -85,8 +85,8 @@ io.on('connection', socket => {
     })
 
     socket.on('choose-nickname', (room, nickname) => {
-        open_rooms[room].changeNickname(socket.id, nickname);
-        socket.emit('nick-changed');
+        const head = open_rooms[room].getPlayer(socket.id).changeNickname(nickname);
+        socket.emit('nick-changed', head);
         sendScore(room);
     })
 
@@ -94,9 +94,9 @@ io.on('connection', socket => {
         
     })
 
-    socket.on('start-game', () => {
-        console.log('start request');
-        // openNewRoom(socket);
+    socket.on('start-game', (room) => {
+        console.log('start request', room);
+        open_rooms[room].startGame();
     })
 })
 

@@ -38,6 +38,14 @@ class Room {
     
     startGame = () => {
         // random turns
+        const toTurn = Object.keys(this.players);
+        let player;
+        while (toTurn.length > 0) {
+            player = toTurn.splice((Math.random() * toTurn.length) | 0, 1)[0];
+            this.turns.push(player);
+        }
+        console.log("room ", this.code, "turns", this.turns);
+        
         // nextTurn(room)
     }
     

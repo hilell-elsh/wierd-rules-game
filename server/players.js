@@ -1,6 +1,6 @@
 class Player {
     constructor(socket, head = false) {
-        this.socketId = socket.id;
+        this.socket = socket;
         this.nickname = "";
         this.score = 0;
         this.head = head;
@@ -9,6 +9,7 @@ class Player {
 
     changeNickname(nickname) {
         this.nickname = nickname;
+        return this.head;
     }
 }
 
