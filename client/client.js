@@ -30,7 +30,8 @@ const nicknameDisplay = document.getElementById("nicknameDisplay");
 const startBtn = document.getElementById("start");
 const gameDisplay = document.getElementById("gameDisplay")
 const asker = document.getElementById("asker");
-const question = document.getElementById("question");
+const questionDisplay = document.getElementById("questionDisplay");
+const answerDisplay = document.getElementById("answerDisplay");
 const answer = document.getElementById("answer");
 const score = document.getElementById("score");
 
@@ -83,6 +84,15 @@ socket.on('nick-changed', (head) => {
     changeNickDisplay();
     hide(chooseNick);
     unhide(gameDisplay);
+})
+socket.on('ask', (question, nicks) => {
+    console.log('ask');
+    console.log(question);
+    console.log(nicks);
+})
+socket.on('answer', (question) => {
+    console.log('answer');
+    console.log(question);
 })
 
 const start = () => {

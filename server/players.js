@@ -11,6 +11,12 @@ class Player {
         this.nickname = nickname;
         return this.head;
     }
+
+    changePosition(position) {
+        this.position = position;
+    }
+
+    getSocket() { return this.socket}
 }
 
 const positions = {
@@ -21,5 +27,6 @@ const positions = {
 }
 
 module.exports = {
-    Player
+    Player,
+    positions
 }

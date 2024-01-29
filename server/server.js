@@ -58,13 +58,6 @@ const nextTurn = (room) => {
     // random correct
 }
 
-const sendScore = (room) => {
-    console.log('send score');
-    io.to(room).emit('score', open_rooms[room].getScore());
-    console.log(open_rooms[room].getScore());
-}
-
-
 
 io.on('connection', socket => {
     console.log(socket.id);
@@ -87,7 +80,7 @@ io.on('connection', socket => {
     socket.on('choose-nickname', (room, nickname) => {
         const head = open_rooms[room].getPlayer(socket.id).changeNickname(nickname);
         socket.emit('nick-changed', head);
-        sendScore(room);
+        open_rooms[room].sendScore();
     })
 
     socket.on('enter-game', (room, nickname) => {
