@@ -26,8 +26,7 @@ const openNewRoom = (socket) => {
     const code = codeG.next().value;
     open_rooms[code] = new Room(code);
     socket.emit('new-room-opened', code);
-    joinToRoom(socket, code, true)
-    console.log(open_rooms);
+    joinToRoom(socket, code, true);
     
     // TODO set timeout interval?
 }
@@ -50,12 +49,19 @@ const joinToRoom = (socket, roomCode, head = false) => {
         socket.emit('join-failed')
         console.log('join to room ' + roomCode + ' failed');
     }
+    console.log(open_rooms);
 }
 
 const nextTurn = (room) => {
     // random question from array
     // items[Math.floor(Math.random()*items.length)];
     // random correct
+}
+
+const sendScore = (room) => {
+    console.log('send score');
+    io.to(room).emit('score', open_rooms[room].getScore());
+    console.log(open_rooms[room].getScore());
 }
 
 
@@ -68,12 +74,7 @@ io.on('connection', socket => {
     socket.on('ping-back', () => {
         pass
     })
-
-    socket.on('start-game', () => {
-        console.log('start request');
-        // openNewRoom(socket);
-    })
-
+    
     socket.on('open-new-room', () => {
         console.log('new-room-request');
         openNewRoom(socket);
@@ -81,6 +82,21 @@ io.on('connection', socket => {
 
     socket.on('join-room', (code) => {
         joinToRoom(socket, code);
+    })
+
+    socket.on('choose-nickname', (room, nickname) => {
+        open_rooms[room].changeNickname(socket.id, nickname);
+        socket.emit('nick-changed');
+        sendScore(room);
+    })
+
+    socket.on('enter-game', (room, nickname) => {
+        
+    })
+
+    socket.on('start-game', () => {
+        console.log('start request');
+        // openNewRoom(socket);
     })
 })
 

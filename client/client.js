@@ -24,7 +24,7 @@ const joinRoomBtn = document.getElementById("joinRoomBtn");
 const newRoomBtn = document.getElementById("newRoomBtn");
 const roomDisplay = document.getElementById("roomDisplay");
 const chooseNick = document.getElementById("chooseNick");
-const nickname = document.getElementById("nickname");
+const nicknameInput = document.getElementById("nickname");
 const nicknameBtn = document.getElementById("nicknameBtn");
 const nicknameDisplay = document.getElementById("nicknameDisplay");
 const startBtn = document.getElementById("start");
@@ -34,13 +34,20 @@ const question = document.getElementById("question");
 const answer = document.getElementById("answer");
 const score = document.getElementById("score");
 
-let roomCode = "0000"
+let roomCode = "0000";
+let nickname = "";
+
+const hide = (el) => {el.setAttribute("hidden", "")}
+const unhide = (el) => {el.removeAttribute("hidden")}
+
+const changeNickDisplay = () => {
+    nicknameDisplay.innerText = nickname;
+}
 
 const socket = io('http://localhost:3000')
 socket.on('connect', () => {
     console.log(socket.id);
 })
-
 socket.on('ping', () => {
     socket.emit('ping-back')
 })
@@ -57,9 +64,24 @@ socket.on('join-failed', () => {
 socket.on('nickname', () => {
     roomDisplay.innerText = roomCode;
     // hide openRoom div
-    openRoom.setAttribute("hidden", "")
+    hide(openRoom);
     // display chooseNick div
-    chooseNick.removeAttribute("hidden")
+    unhide(chooseNick);
+})
+socket.on('score', (players) => {
+    console.log(players);
+    score.innerHTML = "";
+    let p;
+    for (let player of players) {
+        p = document.createElement("p");
+        p.innerText = player.nick + " - " + player.score;
+        score.appendChild(p);
+    }
+})
+socket.on('nick-changed', () => {
+    changeNickDisplay();
+    hide(chooseNick);
+    unhide(gameDisplay);
 })
 
 const start = () => {
@@ -67,9 +89,14 @@ const start = () => {
     alert('Starting')
 }
 
+const sendNick = () => {
+    nickname = nicknameInput.value;
+    socket.emit('choose-nickname', roomCode, nickname)
+    alert('Starting ' + nicknameInput.value)
+}
+
 const enter = () => {
-    socket.emit('enter-game', nickname.value)
-    alert('Starting ' + nickname.value)
+    // enter game
 }
 
 const newRoom = () => {
@@ -82,6 +109,6 @@ const joinRoom = () => {
 }
 
 startBtn.onclick = start;
-nicknameBtn.onclick = enter;
+nicknameBtn.onclick = sendNick;
 newRoomBtn.onclick = newRoom;
 joinRoomBtn.onclick = joinRoom;

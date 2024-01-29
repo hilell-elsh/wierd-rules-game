@@ -6,6 +6,10 @@ class Player {
         this.head = head;
         this.position = positions.Wait;
     }
+
+    changeNickname(nickname) {
+        this.nickname = nickname;
+    }
 }
 
 const positions = {

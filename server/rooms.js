@@ -17,15 +17,23 @@ class Room {
         // ask user nickname
     }
 
-    getPlayers() {
+    getScore() {
         const players = []
-        for (key in this.players) {
+        for (let key in this.players) {
             players.push({
                 "nick": this.players[key].nickname,
                 "score": this.players[key].score
             })
         }
         return players.sort((a, b) => a.score - b.score)
+    }
+
+    getPlayer(id) {
+        return this.players[id];
+    }
+
+    changeNickname(player, nickname) {
+        this.players[player].changeNickname(nickname);
     }
     
     startGame = () => {
