@@ -33,6 +33,7 @@ const asker = document.getElementById("asker");
 const questionDisplay = document.getElementById("questionDisplay");
 const answerDisplay = document.getElementById("answerDisplay");
 const answer = document.getElementById("answer");
+const cards = document.getElementById("cards");
 const score = document.getElementById("score");
 
 let roomCode = "0000";
@@ -43,6 +44,12 @@ const unhide = (el) => {el.removeAttribute("hidden")}
 
 const changeNickDisplay = () => {
     nicknameDisplay.innerText = nickname;
+}
+
+const onCardClick = (id) => {
+    return () => {
+        socket.emit("card-click", id)
+    }
 }
 
 const socket = io('http://localhost:3000')
@@ -89,10 +96,24 @@ socket.on('ask', (question, nicks) => {
     console.log('ask');
     console.log(question);
     console.log(nicks);
+    questionDisplay.innerText = question;
+    
+    cards.innerHTML = "";
+    let card;
+    for (let n of nicks) {
+        card = document.createElement('div');
+        card.classList.add('card');
+        card.innerText = n[1];
+        card.addEventListener('click', onCardClick(n[0]));
+        cards.appendChild(card);
+    }
+
 })
 socket.on('answer', (question) => {
     console.log('answer');
     console.log(question);
+    questionDisplay.innerText = question.question;
+    answerDisplay.innerText = question.answer;
 })
 
 const start = () => {

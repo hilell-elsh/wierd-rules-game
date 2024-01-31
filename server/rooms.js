@@ -41,7 +41,7 @@ class Room {
         io.to(this.code).emit('score', this.getScore());
     }
     
-    startGame() {
+    startGame(io) {
         this.isStart = true;
         // random turns
         const toTurn = Object.keys(this.players);
@@ -52,11 +52,11 @@ class Room {
         }
         // console.log("room ", this.code, "turns", this.turns);
         
-        this.nextTurn()
+        this.nextTurn(io)
     }
     
-    nextTurn() {
-        this.sendScore();
+    nextTurn(io) {
+        this.sendScore(io);
         // random question from array
         this.currentQuestion = questions[this.unusedQuests.splice((Math.random() * this.unusedQuests.length) | 0, 1)[0]];
         // random correct
